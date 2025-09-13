@@ -2,11 +2,6 @@
 import { ref } from "vue";
 import { invoke } from "@tauri-apps/api/core";
 import './renderer'
-
-
-function get(url) {
-  return invoke('get_data', { url });
-}
 </script>
 
 <template>
