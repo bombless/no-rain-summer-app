@@ -2,24 +2,13 @@
 import { Cities } from './cities';
 import debounce from 'debounce';
 
-import { invoke } from "@tauri-apps/api/core";
 
 import { watch } from "vue";
 
+import { log } from './log';
 
 
-function log() {
-  let msg = '';
-  for (let i = 0; i < arguments.length; i += 1) {
-    if (undefined === arguments[i]) {
-        return invoke('log_string', { msg: 'logging undefined: argument ' + i });
-    }
-    if (msg) msg += "\n";
-    msg += arguments[i].toString();
-  }
-  return invoke('log_string', { msg });
-};
-export function start({forHigherTemperature, departurePoint}) {
+export function start({temperatureMode, departurePoint}) {
 
     AMapLoader.load({
         "key": "bd025ef2a45752cd896864d70447a76f",          // 申请好的Web端开发者Key，首次调用 load 时必填
@@ -67,10 +56,11 @@ export function start({forHigherTemperature, departurePoint}) {
             storage.setItem('departurePoint', newVal.toString());
         });
 
-        forHigherTemperature.value = storage.getItem('forHigherTemperature') === 'y';
+        temperatureMode.value = storage.getItem('temperatureMode') || '';
 
-        watch(forHigherTemperature, newVal => {
-            storage.setItem('forHigherTemperature', newVal ? 'y' : '');
+        watch(temperatureMode, newVal => {
+            log('temperatureMode', newVal);
+            storage.setItem('temperatureMode', newVal.toString());
         });
 
 

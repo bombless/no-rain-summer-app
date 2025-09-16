@@ -1,11 +1,11 @@
 <script setup>
-import { ref } from "vue";
-import { invoke } from "@tauri-apps/api/core";
+import { ref, computed } from "vue";
 import { start } from './renderer';
-const forHigherTemperature = ref(false);
+const temperatureMode = ref('lower');
+const forHigherTemperature = computed(() => temperatureMode.value === 'higher');
 const departurePoint = ref('');
 
-start({forHigherTemperature, departurePoint})
+start({temperatureMode, departurePoint})
 </script>
 
 <template>
@@ -13,10 +13,14 @@ start({forHigherTemperature, departurePoint})
   <div id="map_container"></div>
       <div id="pannel">
         <fieldset>
-          <input type="radio" name="temperature-type" id="higherTemperature" :checked="forHigherTemperature">
-          <label for="higherTemperature">找高温</label>
-          <input type="radio" name="temperature-type" id="lowerTemperature" :checked="!forHigherTemperature">
-          <label for="lowerTemperature">找低温</label>
+          <label>
+            <input type="radio" name="temperatureMode" value="higher" v-model="temperatureMode">
+            找高温
+          </label>
+          <label>
+            <input type="radio" name="temperatureMode" value="lower" v-model="temperatureMode">
+            找低温
+          </label>
         </fieldset>
         <fieldset>
           <legend>个人信息：</legend>
