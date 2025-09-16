@@ -4,14 +4,15 @@ import { start } from './renderer';
 const temperatureMode = ref('lower');
 const forHigherTemperature = computed(() => temperatureMode.value === 'higher');
 const departurePoint = ref('');
+const cityList = ref([]);
 
-start({temperatureMode, departurePoint})
+start({temperatureMode, departurePoint, cityList})
 </script>
 
 <template>
 <div id="content">
   <div id="map_container"></div>
-      <div id="pannel">
+      <div id="panel">
         <fieldset>
           <label>
             <input type="radio" name="temperatureMode" value="higher" v-model="temperatureMode">
@@ -30,6 +31,9 @@ start({temperatureMode, departurePoint})
         <ul id="tabs">
           <li>全国</li>
         </ul>
+        <ol>
+          <li v-for="c in cityList" v-text="c.text" @click="c.clickHandler"></li>
+        </ol>
       </div>
     </div>
 
@@ -44,11 +48,11 @@ start({temperatureMode, departurePoint})
 
       body { margin: 0; }
       #content { position: relative; }
-      window, #content { width: 1500px; height: 900px; }
+      #content { width: 1500px; height: 900px; }
       #map_container { position: absolute; left: 0; width: 1200px; height: 900px; }
-      #pannel { position: absolute; left: 1200px; height: 900px; }
-      .pannel { overflow-y: scroll; }
-      #pannel li { cursor: pointer; }
+      #panel { position: absolute; left: 1200px; height: 900px; }
+      .panel { overflow-y: scroll; }
+      #panel li { cursor: pointer; }
       .amap-info-content { background-color: yellow !important; opacity: .75; }
 
 </style>

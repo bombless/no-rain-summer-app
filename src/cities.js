@@ -5,18 +5,19 @@ import { cities as fetchData } from './fetch';
 export class Cities {
     items = null;
     provinces = new Map;
-    constructor(onFocus, mark) {
+    citiesOfProvinces = new Map;
+    constructor(cityList, onFocus, mark) {
         const tabs = document.querySelector('#tabs');
-        const pannel = document.querySelector('#pannel');
+        const pannel = document.querySelector('#panel');
         // pannel.className = 'pannel';
         this.items = fetchData().then(items => {
             const cityOl = document.createElement('ol');
             cityOl.dataset.name = '全国';
-            cityOl.className = 'pannel';
+            cityOl.className = 'panel';
             const provinces = this.provinces;
             provinces.set('全国', { dom: cityOl, cities: null })
             tabs.addEventListener('click', e => {
-                pannel.querySelectorAll('.pannel').forEach(pannel => {
+                pannel.querySelectorAll('.panel').forEach(pannel => {
                     //console.log(e.target.textContent, pannel.dataset.name);
                     
                     debounce(() => onFocus(provinces.get(e.target.textContent).cities), 30).call();
@@ -37,10 +38,10 @@ export class Cities {
                 } else {
                     const provincePannel = document.createElement('ol');
                     provincePannel.appendChild(options());
-                    provincePannel.className = 'pannel';
+                    provincePannel.className = 'panel';
                     provincePannel.dataset.name = item.province;
                     provincePannel.style.display = 'none';
-                    pannel.appendChild(provincePannel);
+                    // pannel.appendChild(provincePannel);
                     const btn = document.createElement('li');
                     btn.textContent = item.province;
                     tabs.appendChild(btn);
@@ -52,6 +53,14 @@ export class Cities {
                 const temperature = item.range.match(re)[1];
                 
                 cityLi.textContent = temperature + ' ' + item.province + item.city;
+                let fnZoom;
+                function clickHandler() {
+                    if (fnZoom) fnZoom();
+                }
+                cityList.value.push({
+                    text: temperature + ' ' + item.province + item.city,
+                    clickHandler,
+                });
                 cityOl.appendChild(cityLi);
                 cityLi.title = JSON.stringify(item);
                 const provinceLi = document.createElement('li');
@@ -63,13 +72,14 @@ export class Cities {
                 province.cities.push(marker);
                 ret.push({
                     onClick(zoom) {
+                        fnZoom = zoom;
                         cityLi.addEventListener('click', zoom);
                         provinceLi.addEventListener('click', zoom);
                     },
                     ...item,
                 });
             }
-            pannel.appendChild(cityOl);
+            // pannel.appendChild(cityOl);
             //console.log(cityOl);
             return ret;
         })
