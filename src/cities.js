@@ -8,7 +8,7 @@ export class Cities {
     constructor(onFocus, mark) {
         const tabs = document.querySelector('#tabs');
         const pannel = document.querySelector('#pannel');
-        pannel.className = 'pannel';
+        // pannel.className = 'pannel';
         this.items = fetchData().then(items => {
             const cityOl = document.createElement('ol');
             cityOl.dataset.name = '全国';
