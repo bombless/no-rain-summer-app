@@ -5,8 +5,11 @@ const temperatureMode = ref('lower');
 const forHigherTemperature = computed(() => temperatureMode.value === 'higher');
 const departurePoint = ref('');
 const cityList = ref([]);
+const provinceList = ref([]);
+const currProvince = ref('');
+const cityDisplayList = computed(() => cityList.value.filter(x => !currProvince.value || x.province === currProvince.value));
 
-start({temperatureMode, departurePoint, cityList})
+start({temperatureMode, departurePoint, cityList, provinceList})
 </script>
 
 <template>
@@ -29,10 +32,11 @@ start({temperatureMode, departurePoint, cityList})
           <input id="departurePoint" v-model="departurePoint">
         </fieldset>
         <ul id="tabs">
-          <li>全国</li>
+          <li @click="currProvince = null">全国</li>
+          <li v-for="p in provinceList" v-text="p.text" @click="currProvince = p.text"></li>
         </ul>
         <ol>
-          <li v-for="c in cityList" v-text="c.text" @click="c.clickHandler"></li>
+          <li v-for="c in cityDisplayList" v-text="c.text" @click="c.clickHandler"></li>
         </ol>
       </div>
     </div>

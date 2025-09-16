@@ -6,8 +6,8 @@ export class Cities {
     items = null;
     provinces = new Map;
     citiesOfProvinces = new Map;
-    constructor(cityList, onFocus, mark) {
-        const tabs = document.querySelector('#tabs');
+    constructor(cityList, provinceList, onFocus, mark) {
+        // const tabs = document.querySelector('#tabs');
         const pannel = document.querySelector('#panel');
         // pannel.className = 'pannel';
         this.items = fetchData().then(items => {
@@ -16,20 +16,20 @@ export class Cities {
             cityOl.className = 'panel';
             const provinces = this.provinces;
             provinces.set('全国', { dom: cityOl, cities: null })
-            tabs.addEventListener('click', e => {
-                pannel.querySelectorAll('.panel').forEach(pannel => {
-                    //console.log(e.target.textContent, pannel.dataset.name);
-                    
-                    debounce(() => onFocus(provinces.get(e.target.textContent).cities), 30).call();
-                    if (e.target.textContent === pannel.dataset.name) {
-                        pannel.style.display = 'block';
-                    }
-                    else {
-                        pannel.style.display = 'none';
-                    }
-                })
+            // tabs.addEventListener('click', e => {
+            //     pannel.querySelectorAll('.panel').forEach(pannel => {
+            //         //console.log(e.target.textContent, pannel.dataset.name);
+            //
+            //         debounce(() => onFocus(provinces.get(e.target.textContent).cities), 30).call();
+            //         if (e.target.textContent === pannel.dataset.name) {
+            //             pannel.style.display = 'block';
+            //         }
+            //         else {
+            //             pannel.style.display = 'none';
+            //         }
+            //     })
             // console.log(e.target);
-            })
+            // })
             const ret = [];
             for (const item of items.slice(0, 180)) {
                 let province;
@@ -44,7 +44,8 @@ export class Cities {
                     // pannel.appendChild(provincePannel);
                     const btn = document.createElement('li');
                     btn.textContent = item.province;
-                    tabs.appendChild(btn);
+                    // tabs.appendChild(btn);
+                    provinceList.value.push({text: item.province});
                     province = { dom: provincePannel, cities: [] };
                     provinces.set(item.province, province);
                 }
@@ -60,6 +61,7 @@ export class Cities {
                 cityList.value.push({
                     text: temperature + ' ' + item.province + item.city,
                     clickHandler,
+                    province: item.province,
                 });
                 cityOl.appendChild(cityLi);
                 cityLi.title = JSON.stringify(item);

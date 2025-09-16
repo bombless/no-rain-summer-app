@@ -8,7 +8,7 @@ import { watch } from "vue";
 import { log } from './log';
 
 
-export function start({temperatureMode, departurePoint, cityList}) {
+export function start({temperatureMode, departurePoint, cityList, provinceList}) {
 
     AMapLoader.load({
         "key": "bd025ef2a45752cd896864d70447a76f",          // 申请好的Web端开发者Key，首次调用 load 时必填
@@ -65,7 +65,7 @@ export function start({temperatureMode, departurePoint, cityList}) {
 
 
 
-        const cities = new Cities(cityList, x => {
+        const cities = new Cities(cityList, provinceList, x => {
             map.setFitView(x)
         }, info => mark(map, info));
         for (const item of await cities.items) {
