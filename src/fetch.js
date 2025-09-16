@@ -32,7 +32,11 @@ function regions() {
 }
 
 
-
+/**
+ * GET 请求
+ * @param {string} url 请求地址
+ * @returns {Promise<string>} 返回一个解析为字符串的 Promise
+ */
 function get(url) {
   return invoke('get_data', { url });
 }
