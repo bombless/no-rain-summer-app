@@ -1,6 +1,7 @@
 <script setup>
 import { ref, computed } from "vue";
 import { start } from './renderer';
+import {log} from "./log.js";
 const temperatureMode = ref('lower');
 const forHigherTemperature = computed(() => temperatureMode.value === 'higher');
 const departurePoint = ref('');
@@ -9,7 +10,21 @@ const provinceList = ref([]);
 const currProvince = ref('');
 const cityDisplayList = computed(() => cityList.value.filter(x => !currProvince.value || x.province === currProvince.value));
 
-start({temperatureMode, departurePoint, cityList, provinceList})
+start({temperatureMode, departurePoint, cityList, provinceList});
+
+
+['scroll','wheel','touchmove'].forEach(evt =>
+    window.addEventListener(evt, e => {
+      // 冒泡阶段就能抓住
+      const el = e.target;
+      // 只关心“会滚动的节点”
+      if (el.scrollHeight > el.clientHeight) {
+        log('[scroll] 元素 =>', el.tagName,
+            'scrollHeight|clientHeight =', el.scrollHeight, '|', el.clientHeight);
+      }
+    }, true)   // true = 捕获阶段，保证先拿到
+);
+
 </script>
 
 <template>
@@ -49,18 +64,24 @@ start({temperatureMode, departurePoint, cityList, provinceList})
     
     -->
 <style scoped>
-
-      body { margin: 0; }
-      #content { position: relative; }
+      /*html { width: 1500px; height: 900px; }
+      body { width: 1500px; height: 900px; margin: 0 !important; }
+      #content { position: relative; overflow: hidden; }*/
       #content { width: 1500px; height: 900px; }
       #map_container { position: absolute; left: 0; width: 1200px; height: 900px; }
-      #panel { position: absolute; left: 1200px; height: 900px; }
+      #panel {
+        position: absolute;
+        left: 1200px;
+        height: 900px;
+        overflow-y: auto;
+      }
       .panel { overflow-y: scroll; }
       #panel li { cursor: pointer; }
       .amap-info-content { background-color: yellow !important; opacity: .75; }
 
 </style>
 <style>
+body { margin: 0; }
 :root {
   font-family: Inter, Avenir, Helvetica, Arial, sans-serif;
   font-size: 16px;
