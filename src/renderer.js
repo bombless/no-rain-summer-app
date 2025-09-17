@@ -36,7 +36,7 @@ export function start({temperatureMode, departurePoint, cityList, provinceList})
             title: info.province + info.city,
         });
         ;
-        log('position', info.position, 'title', info.province + info.city);
+        // log('position', info.position, 'title', info.province + info.city);
 
         // 将创建的点标记添加到已有的地图实例：
         debounce(() => {
