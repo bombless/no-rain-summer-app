@@ -35,7 +35,6 @@ export function start({temperatureMode, departurePoint, cityList, provinceList})
             position: info.position,   // 经纬度对象，也可以是经纬度构成的一维数组[116.39, 39.9]
             title: info.province + info.city,
         });
-        ;
         // log('position', info.position, 'title', info.province + info.city);
 
         // 将创建的点标记添加到已有的地图实例：
@@ -90,6 +89,8 @@ export function start({temperatureMode, departurePoint, cityList, provinceList})
 
             item.onClick(zoom);
         }
+        // log(cityList.value.length, '个城市')
+        // computedCities(cityList)
     }
 
 }

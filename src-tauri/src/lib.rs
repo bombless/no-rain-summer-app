@@ -1,17 +1,16 @@
 // Learn more about Tauri commands at https://tauri.app/develop/calling-rust/
 
-
 #[tauri::command]
 async fn get_data(url: String) -> Result<String, String> {
-    println!("Fetching data from: {}", url);
+//     println!("Fetching data from: {}", url);
     let resp = reqwest::get(&url).await.map_err(|e| e.to_string())?;
-    println!("Response status: {}", resp.status());
-    let body = resp.text().await.map_err(|e| e.to_string())?;
-    if body.chars().count() > 99 {
-        println!("Data fetched successfully: {}...", body.chars().take(99).collect::<String>());
-    } else {
-        println!("Data fetched successfully: {}", body);
-    }
+//     println!("Response status: {}", resp.status());
+    let body = resp.text_with_charset("gbk").await.map_err(|e| e.to_string())?;
+//     if body.chars().count() > 99 {
+//         println!("Data fetched successfully: {}...", body.chars().take(99).collect::<String>());
+//     } else {
+//         println!("Data fetched successfully: {}", body);
+//     }
     Ok(body)
 }
 #[tauri::command]

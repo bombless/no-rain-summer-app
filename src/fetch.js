@@ -46,6 +46,7 @@ export function cities() {
     const getPosition = regions();
     return get('http://waptianqi.2345.com/temperature-rank-rev.htm')
     .then(html => {
+        // debugger;
         // log('cities()', res)
         //console.log(`statusCode: ${res.status}`);
         //console.log(res.data);
@@ -80,23 +81,22 @@ export function cities() {
 
 };
 
-export async function weather(links) {
+export function weather(links) {
     return Promise.all(links.map(link => {
+        // log('link', link);
         if (!link) return Promise.reject();
         return get('http://waptianqi.2345.com' + link)
         //.get('http://waptianqi.2345.com' + link)
-        .then(async res => {
-            await log('http://waptianqi.2345.com' + link, res)
-            const data = res.data;
-            //console.log('data', res.data);
-            const html = new TextDecoder("gbk").decode(data);
-            console.log('html', html);
-            const root = parse(html);
+        .then(res => {
+
+            const parser = new DOMParser();
+            const root = parser.parseFromString(res, 'text/html');
+            // debugger;
             //console.log('x', root);
             //window.x = root;
             //console.log(res);
             const list = [].slice.call(root.querySelectorAll('.days15-weather .phrase')).map(x => x.textContent.indexOf('雨') > -1);
-            log('雨', list);
+            // log('雨', list);
             return list;
         })
         .catch(error => {

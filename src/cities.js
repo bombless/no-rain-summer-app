@@ -1,6 +1,7 @@
-import { options } from './weather';
+
 import debounce from 'debounce';
 import { cities as fetchData } from './fetch';
+import {log} from "./log.js";
 
 export class Cities {
     items = null;
@@ -25,10 +26,13 @@ export class Cities {
                 function clickHandler() {
                     if (fnZoom) fnZoom();
                 }
+                // log('link', item.city, item.link);
                 cityList.value.push({
                     text: temperature + ' ' + item.province + item.city,
                     clickHandler,
                     province: item.province,
+                    link: item.link,
+                    city: item.city,
                 });
                 const marker = mark(item);
                 province.cities.push(marker);
