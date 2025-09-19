@@ -10,20 +10,6 @@ export class Cities {
         this.items = fetchData().then(items => {
             const provinces = this.provinces;
             provinces.set('全国', { cities: null })
-            // tabs.addEventListener('click', e => {
-            //     pannel.querySelectorAll('.panel').forEach(pannel => {
-            //         //console.log(e.target.textContent, pannel.dataset.name);
-            //
-            //         debounce(() => onFocus(provinces.get(e.target.textContent).cities), 30).call();
-            //         if (e.target.textContent === pannel.dataset.name) {
-            //             pannel.style.display = 'block';
-            //         }
-            //         else {
-            //             pannel.style.display = 'none';
-            //         }
-            //     })
-            // console.log(e.target);
-            // })
             const ret = [];
             for (const item of items.slice(0, 180)) {
                 let province;
