@@ -5,7 +5,6 @@ import { cities as fetchData } from './fetch';
 export class Cities {
     items = null;
     provinces = new Map;
-    citiesOfProvinces = new Map;
     constructor(cityList, provinceList, onFocus, mark) {
         this.items = fetchData().then(items => {
             const provinces = this.provinces;
