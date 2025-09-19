@@ -3,6 +3,7 @@ import { parse } from 'node-html-parser';
 import geolocation from './region.json';
 
 import { invoke } from "@tauri-apps/api/core";
+import {log} from "./log";
 
 function regions() {
     const data = {};
@@ -39,15 +40,6 @@ function regions() {
  */
 function get(url) {
   return invoke('get_data', { url });
-}
-
-function log() {
-  let msg = '';
-  for (let i = 0; i < arguments.length; i += 1) {
-    if (msg) msg += "\n";
-    msg += arguments[i].toString();
-  }
-  return invoke('log_string', { msg });
 }
 
 export function cities() {
@@ -95,17 +87,17 @@ export async function weather(links) {
         //.get('http://waptianqi.2345.com' + link)
         .then(async res => {
             await log('http://waptianqi.2345.com' + link, res)
-            // const data = res.data;
-            // //console.log('data', res.data);
-            // const html = new TextDecoder("gbk").decode(data);
-            // console.log('html', html);
-            // const root = parse(html);
-            // //console.log('x', root);
-            // //window.x = root;
-            // //console.log(res);
-            // const list = [].slice.call(root.querySelectorAll('.days15-weather .phrase')).map(x => x.textContent.indexOf('雨') > -1);
-            // //console.log(list);
-            // return list;
+            const data = res.data;
+            //console.log('data', res.data);
+            const html = new TextDecoder("gbk").decode(data);
+            console.log('html', html);
+            const root = parse(html);
+            //console.log('x', root);
+            //window.x = root;
+            //console.log(res);
+            const list = [].slice.call(root.querySelectorAll('.days15-weather .phrase')).map(x => x.textContent.indexOf('雨') > -1);
+            log('雨', list);
+            return list;
         })
         .catch(error => {
             log('caught error', error)
